@@ -2,18 +2,15 @@ import numpy as np
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
 from sklearn.preprocessing import LabelEncoder
-from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
 import matplotlib.pyplot as plt
 
 #Read data
-X = pd.read_csv('irisX.txt',sep=",",header=None)
-y = pd.read_csv('irisY.txt',sep=",",header=None)
+X = pd.read_csv('vowelX.txt',sep=",",header=None)
+y = pd.read_csv('vowelY.txt',sep=",",header=None)
 
 #predict_data = X.iloc[[0,25,50,75,100,125,140],:].values
 #predict_labels = y.iloc[[0,25,50,75,100,125,140],:]
@@ -35,24 +32,28 @@ y = np_utils.to_categorical(encoded_y)
 X = X.values
 y = y.values
 
+#Normalize input values
+X = preprocessing.normalize(X)
+
 #Train and validation split
-X_train,X_val,y_train,y_val = train_test_split(X,y,test_size = 0.3)
+X_train,X_val,y_train,y_val = train_test_split(X,y,test_size = 0.2)
 
 #Create model
 model = Sequential()
-model.add(Dense(64, input_dim=4, activation='relu'))
+model.add(Dense(512, input_dim=10, activation='relu'))
+model.add(Dense(256, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(16, activation='relu'))
-model.add(Dense(8, activation='relu'))
-model.add(Dense(4, activation='relu'))
-model.add(Dense(3, activation='softmax'))
+model.add(Dense(11, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
 history = model.fit(X_train,
                    y_train,
-                   epochs=100,
-                   batch_size=5,
+                   epochs=200,
+                   batch_size=12,
                    validation_data=(X_val, y_val))
 
 #Plot accuracy accross time for both training and test data
