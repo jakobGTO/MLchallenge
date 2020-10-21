@@ -1,15 +1,9 @@
 import numpy as np
 import pandas as pd
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.utils import np_utils
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split,cross_val_score
-from sklearn import preprocessing
+from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import GradientBoostingClassifier
-import matplotlib.pyplot as plt
 
 #Read data
 df = pd.read_csv('TrainOnMe.csv',sep=",",header=0)
