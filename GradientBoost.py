@@ -18,6 +18,8 @@ df = df.dropna()
 df = df.drop(index=453)
 df = df.drop(index=539)
 
+df = df.drop(['x4', 'x5'])
+
 #Map false/true string to 0/1 and gradevariabel 0-6
 df['x5'] = df['x5'].astype('category')
 df['x5'] = df['x5'].cat.codes
@@ -47,7 +49,7 @@ model = GradientBoostingClassifier(learning_rate=0.1,max_depth=3,n_estimators=10
 model.fit(X,y)
 
 # Train the model on training data
-score = cross_val_score(model,X,y,cv=15)
+score = cross_val_score(model,X,y,cv=5)
 np.average(score)
 
 # Predict new data
